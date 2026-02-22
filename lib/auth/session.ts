@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { cookies } from "next/headers";
+import { isAuthEnabled } from "@/lib/auth/validators";
 
 const COOKIE_NAME = "trip_dash_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
@@ -28,12 +29,17 @@ function isValidToken(token?: string) {
 }
 
 export async function isAuthenticated() {
+  // If auth isn't configured, treat as open access (initial testing mode).
+  if (!isAuthEnabled()) return true;
+
   const store = await cookies();
   const token = store.get(COOKIE_NAME)?.value;
   return isValidToken(token);
 }
 
 export async function createSession() {
+  if (!isAuthEnabled()) return;
+
   const store = await cookies();
   store.set(COOKIE_NAME, buildToken(), {
     httpOnly: true,
