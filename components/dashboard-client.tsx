@@ -55,11 +55,32 @@ export default function DashboardClient() {
     if (res.ok) load();
   }
 
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("tripDashTheme");
+    const t = (saved === "dark" || saved === "light") ? saved : "light";
+    setTheme(t);
+    document.documentElement.dataset.theme = t;
+  }, []);
+
+  function toggleTheme() {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    window.localStorage.setItem("tripDashTheme", next);
+  }
+
   return (
     <main className="container">
       <div className="row" style={{ justifyContent: "space-between", alignItems: "center" }}>
         <h1 style={{ margin: "8px 0" }}>Trip Dashboard</h1>
-        <button className="button secondary" style={{ width: "auto", padding: "10px 12px" }} onClick={logout}>Logout</button>
+        <div className="row" style={{ width: "auto" }}>
+          <button className="button secondary theme-toggle" onClick={toggleTheme} aria-label="Toggle night mode">
+            {theme === "light" ? "Night" : "Day"}
+          </button>
+          <button className="button secondary" style={{ width: "auto", padding: "10px 12px" }} onClick={logout}>Logout</button>
+        </div>
       </div>
 
       <section className="card stack">
@@ -86,10 +107,13 @@ export default function DashboardClient() {
             <div className="date-heading">{fmtDate(day)}</div>
             <div className="stack">
               {grouped[day].map((entry) => (
-                <article className="entry" key={entry.id}>
+                <article
+                  className={`entry family-${entry.family.toLowerCase()}`}
+                  key={entry.id}
+                >
                   <div className="badges">
-                    <span className="badge">{entry.family}</span>
-                    <span className="badge">{entry.type}</span>
+                    <span className={`badge family ${entry.family.toLowerCase()}`}>{entry.family}</span>
+                    <span className="badge type">{entry.type}</span>
                   </div>
                   <h4>{entry.location}</h4>
                   <p className="muted" style={{ margin: "4px 0" }}>

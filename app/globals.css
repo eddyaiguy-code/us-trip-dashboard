@@ -1,28 +1,87 @@
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; background: #f4f6fb; color: #111827; }
+html, body { margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; }
 a { color: inherit; text-decoration: none; }
 
+:root{
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --line: #d1d5db;
+  --chipBg: #ffffff;
+  --chipActiveBg: #dbeafe;
+  --chipActiveLine: #2563eb;
+  --chipActiveText: #1d4ed8;
+  --primary: #2563eb;
+  --danger: #dc2626;
+
+  /* family colors */
+  --ho: #2563eb;   /* blue */
+  --lai: #16a34a;  /* green */
+  --ooi: #a855f7;  /* purple */
+}
+
+/* Night mode (default off). Toggle by adding data-theme="dark" on <html>. */
+html[data-theme="dark"]{
+  --bg: #0b1220;
+  --card: rgba(255,255,255,0.06);
+  --text: #e5e7eb;
+  --muted: rgba(229,231,235,0.72);
+  --line: rgba(255,255,255,0.16);
+  --chipBg: rgba(255,255,255,0.06);
+  --chipActiveBg: rgba(37,99,235,0.25);
+  --chipActiveLine: rgba(37,99,235,0.65);
+  --chipActiveText: #dbeafe;
+}
+
+body { background: var(--bg); color: var(--text); }
+
 .container { max-width: 780px; margin: 0 auto; padding: 16px; }
-.card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.input, .select, .textarea, .button { width: 100%; font-size: 16px; border-radius: 12px; border: 1px solid #d1d5db; padding: 12px; }
+.card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+html[data-theme="dark"] .card{ border-color: var(--line); box-shadow: 0 10px 30px rgba(0,0,0,0.35); backdrop-filter: blur(8px); }
+
+.input, .select, .textarea, .button { width: 100%; font-size: 16px; border-radius: 12px; border: 1px solid var(--line); padding: 12px; background: var(--chipBg); color: var(--text); }
 .textarea { min-height: 92px; resize: vertical; }
-.button { background: #2563eb; color: white; border: none; font-weight: 600; }
-.button.secondary { background: #e5e7eb; color: #111827; }
-.button.danger { background: #dc2626; }
+
+.button { background: var(--primary); color: white; border: none; font-weight: 700; }
+.button.secondary { background: rgba(229,231,235,0.9); color: #111827; }
+html[data-theme="dark"] .button.secondary{ background: rgba(255,255,255,0.10); color: var(--text); border: 1px solid var(--line); }
+.button.danger { background: var(--danger); }
+
 .stack { display: grid; gap: 10px; }
 .row { display: flex; gap: 8px; }
 
 .chip-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.chip { text-align: center; border-radius: 999px; padding: 10px 8px; font-weight: 600; border: 1px solid #d1d5db; background: white; font-size: 14px; }
-.chip.active { background: #dbeafe; border-color: #2563eb; color: #1d4ed8; }
+.chip { text-align: center; border-radius: 999px; padding: 10px 8px; font-weight: 800; border: 1px solid var(--line); background: var(--chipBg); font-size: 14px; }
+.chip.active { background: var(--chipActiveBg); border-color: var(--chipActiveLine); color: var(--chipActiveText); }
 
 .date-group { margin-top: 14px; }
-.date-heading { font-size: 14px; color: #374151; margin: 10px 2px; }
-.entry { border: 1px solid #e5e7eb; border-radius: 14px; padding: 12px; background: #fff; }
+.date-heading { font-size: 14px; color: color-mix(in srgb, var(--text) 70%, transparent); margin: 10px 2px; }
+
+.entry { border: 1px solid color-mix(in srgb, var(--line) 65%, transparent); border-radius: 14px; padding: 12px; background: var(--card); }
 .entry h4 { margin: 0 0 6px 0; }
-.muted { color: #6b7280; font-size: 13px; }
-.badges { display: flex; gap: 6px; margin-bottom: 8px; }
-.badge { font-size: 12px; background: #eef2ff; color: #3730a3; border-radius: 999px; padding: 4px 8px; }
+
+.muted { color: var(--muted); font-size: 13px; }
+
+.badges { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.badge { font-size: 12px; border-radius: 999px; padding: 6px 10px; font-weight: 800; letter-spacing: 0.02em; }
+
+/* Family badges (bigger + color-coded) */
+.badge.family { color: white; }
+.badge.family.ho { background: var(--ho); }
+.badge.family.lai { background: var(--lai); }
+.badge.family.ooi { background: var(--ooi); }
+
+/* Type badges */
+.badge.type { background: rgba(99,102,241,0.12); color: color-mix(in srgb, var(--text) 85%, transparent); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+
+/* Left stripe on entry card by family */
+.entry.family-ho { border-left: 6px solid var(--ho); }
+.entry.family-lai { border-left: 6px solid var(--lai); }
+.entry.family-ooi { border-left: 6px solid var(--ooi); }
+
+/* Night mode toggle button */
+.theme-toggle{ width:auto; padding:10px 12px; border-radius: 999px; }
 
 .fab {
   position: fixed;
@@ -32,7 +91,7 @@ a { color: inherit; text-decoration: none; }
   height: 56px;
   border-radius: 999px;
   border: none;
-  background: #2563eb;
+  background: var(--primary);
   color: white;
   font-size: 32px;
   line-height: 1;
