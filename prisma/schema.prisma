@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Family {
+  HO
+  LAI
+  OOI
+}
+
+enum EntryType {
+  FLIGHT
+  HOTEL
+  ACTIVITY
+  OTHER
+}
+
+model TripEntry {
+  id          String   @id @default(cuid())
+  family      Family
+  type        EntryType
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  notes       String
+  screenshot  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([startDate])
+  @@index([family])
+  @@index([type])
+}
