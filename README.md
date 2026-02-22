@@ -15,6 +15,7 @@ Mobile-first temporary trip planner dashboard built with **Next.js App Router + 
 - Storage interface abstraction for uploads
   - Local dev stub (writes under `public/uploads`)
   - Optional Vercel Blob adapter for production
+  - Optional Supabase Storage adapter for production
 - Data layer abstraction via repository interface
   - Default adapter: Prisma/Postgres
 
@@ -70,8 +71,9 @@ Open: `http://localhost:3000`
    - `COOKIE_SECRET`
    - `DATABASE_URL`
    - `DATA_ADAPTER=prisma`
-   - `STORAGE_ADAPTER=vercel-blob` (optional)
+   - `STORAGE_ADAPTER=vercel-blob` or `STORAGE_ADAPTER=supabase` (optional)
    - `BLOB_READ_WRITE_TOKEN` (required only for Vercel Blob)
+   - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_STORAGE_BUCKET` (required for Supabase Storage)
 4. Run Prisma migration against production DB (CI step or one-time command).
 
 ---
@@ -87,6 +89,12 @@ Open: `http://localhost:3000`
 - `STORAGE_ADAPTER=vercel-blob`
 - Requires `BLOB_READ_WRITE_TOKEN`
 - Returns public blob URL for screenshot field
+
+### Supabase Storage
+- `STORAGE_ADAPTER=supabase`
+- Requires server-side `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`
+- Optional `SUPABASE_STORAGE_BUCKET` (default: `trip-screenshots`)
+- Bucket is auto-created if missing and uploads return public URL for `screenshot`
 
 ---
 

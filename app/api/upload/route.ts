@@ -22,6 +22,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Image too large (max 6MB)" }, { status: 400 });
   }
 
-  const url = await getUploadStorage().save(file);
-  return NextResponse.json({ url });
+  try {
+    const url = await getUploadStorage().save(file);
+    return NextResponse.json({ url });
+  } catch (error) {
+    console.error("Upload failed", error);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  }
 }
